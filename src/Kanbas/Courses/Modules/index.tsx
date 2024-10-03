@@ -1,27 +1,69 @@
+// src/Kanbas/Courses/Modules/index.tsx
+import { FaGripVertical } from "react-icons/fa";
+import GreenCheckmark from "./GreenCheckmark";
+import ModulesControls from "./ModulesControls";
 export default function Modules() {
   return (
-    <div>
-      {/* Implement Collapse All button, View Progress button, etc. */}
-      <ul id="wd-modules">
-        <li className="wd-module">
-          <div className="wd-title">Week 1</div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Introduction to the course</li>
-                <li className="wd-content-item">
-                  Learn what is Web Development
-                </li>
-              </ul>
+    <div className="main-content">
+      {/* Module Controls (top buttons) */}
+      <ModulesControls />
+
+      {/* Module List */}
+      <ul className="list-group">
+        {/* Lecture 1 */}
+        <li className="list-group-item border border-gray mb-4">
+          <div className="d-flex justify-content-between align-items-center bg-light p-2">
+            <div className="d-flex align-items-center">
+              <FaGripVertical className="me-2" />
+              <h5 className="mb-0">Lecture 1</h5>
+            </div>
+            <GreenCheckmark />
+          </div>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              BeforeSlides-Lec1.pdf
+              <GreenCheckmark />
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              After135Slides-Lec1.pdf
+              <GreenCheckmark />
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              After315Slides-Lec1.pdf
+              <GreenCheckmark />
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              950-lec01.pdf
+              <GreenCheckmark />
             </li>
           </ul>
         </li>
-        <li className="wd-module">
-          <div className="wd-title">Week 2</div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
+
+        {/* Lecture 2 */}
+        <li className="list-group-item border border-gray mb-4">
+          <div className="d-flex justify-content-between align-items-center bg-light p-2">
+            <div className="d-flex align-items-center">
+              <FaGripVertical className="me-2" />
+              <h5 className="mb-0">Lecture 2</h5>
+            </div>
+            <GreenCheckmark />
+          </div>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              BeforeSlides-Lec2.pdf
+              <GreenCheckmark />
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              After135Slides-Lec2.pdf
+              <GreenCheckmark />
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              After315Slides-Lec2.pdf
+              <GreenCheckmark />
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              lec02.pdf
+              <GreenCheckmark />
             </li>
           </ul>
         </li>

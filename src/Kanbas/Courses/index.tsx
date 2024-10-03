@@ -4,9 +4,10 @@ import Modules from "./Modules";
 import CoursesNavigation from "./Navigation";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
+import PeopleTable from "./PeopleTable";
 export default function Courses() {
   return (
-    <div id="wd-courses">
+    <div id="wd-courses" style={{ marginLeft: '120px' }}>
       <h2>Course 1234</h2>
       <table>
         <tbody>
@@ -21,7 +22,7 @@ export default function Courses() {
                 <Route path="Modules" element={<Modules />} />
                 <Route path="Assignments/:aid" element={<AssignmentEditor />} />
                 <Route path="Assignments" element={<Assignments />} />
-                <Route path="People" element={<h2>People</h2>} />
+                <Route path="people" element={<PeopleTable />} /> {/* Add this line */}
               </Routes>
             </td>
           </tr>

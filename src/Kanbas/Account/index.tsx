@@ -6,7 +6,7 @@ import AccountNavigation from "./Navigation";
 
 export default function Account() {
   return (
-    <div>
+    <div className="main-content">
       <h2>Account</h2>
       <table>
         <tbody>

@@ -7,8 +7,9 @@ import KanbasNavigation from "./Navigation";
 export default function Kanbas() {
   return (
     <div id="wd-kanbas">
-      <h1>Kanbas</h1>
-      <h2>Name: Mohammad Saneian</h2>
+      <h1 style={{ marginLeft: '120px' }}>Kanbas</h1>
+      <h2 style={{ marginLeft: '120px' }}>Name: Mohammad Saneian</h2>
+      
       <table>
         <tbody>
           <tr>
