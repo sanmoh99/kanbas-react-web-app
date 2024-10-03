@@ -1,0 +1,31 @@
+/* Fixed navigation bar */
+.navbar {
+    width: 120px; /* Fixed width */
+    position: fixed; /* Make sure the navbar stays in place */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Full height */
+    background-color: black; /* Background color */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .navbar .list-group-item {
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .navbar .list-group-item:hover {
+    background-color: #555;
+    color: white;
+  }
+  
+  /* Main content should be shifted to the right */
+  .main-content {
+    margin-left: 120px; /* This should match the width of the navbar */
+    padding: 20px; /* Optional padding */
+  }

@@ -1,0 +1,30 @@
+#wd-courses-navigation {
+  background-color: white;
+}
+
+.list-group-item {
+  font-size: 18px; /* Increase the text size */
+  color: #d9534f; /* Make the text red */
+  padding: 15px 20px; /* Add padding to space out the items */
+}
+
+.list-group-item:hover {
+  color: #d9534f; /* Keep the text red on hover */
+}
+
+.list-group-item.active {
+  color: black; /* Make the active text black */
+  background-color: white; /* Keep the background white */
+  border-left: 3px solid black !important; /* Black border on the left */
+  font-weight: bold;
+}
+
+.list-group-item:not(.active) {
+  color: #d9534f; /* Red for inactive items */
+  background-color: white; /* White background */
+  border: none;
+}
+
+.list-group-item:not(.active):hover {
+  background-color: #f9f9f9; /* Slightly darker on hover for non-active links */
+}
