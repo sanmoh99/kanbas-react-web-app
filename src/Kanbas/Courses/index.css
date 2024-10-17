@@ -1,0 +1,21 @@
+.inactive-link {
+    color: red; /* Make inactive links red */
+  }
+  
+  .active-link {
+    color: black; /* Make the active link black */
+  }
+  .nav-link {
+    color: red !important; /* Ensure all navigation links are red */
+  }
+  
+  /* Set the text above the navigation (breadcrumb) to red */
+  #breadcrumb {
+    color: red !important; /* Ensure the breadcrumb is also red */
+  }
+  
+  /* Make the active navigation link black */
+  .active-link {
+    color: black !important; /* Make the active link black */
+  }
+  

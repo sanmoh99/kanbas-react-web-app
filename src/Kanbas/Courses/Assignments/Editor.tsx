@@ -1,146 +1,96 @@
-import React from "react";
-import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import { useParams, Link } from "react-router-dom";
+import * as db from "../../Database";  // Adjust this path as needed
+import { useState } from "react";
+
+// Define the assignment type
+interface Assignment {
+  _id: string;
+  title: string;
+  description?: string;
+  points?: number;
+  course: string;
+  dueDate?: string;
+  availableDate?: string;
+}
 
 export default function AssignmentEditor() {
+  const { cid, aid } = useParams(); // Get course ID and assignment ID from the URL
+  const assignment = db.assignments.find((a: Assignment) => a._id === aid); // Find the assignment
+
+  // Create state variables for the assignment fields
+  const [title, setTitle] = useState(assignment?.title || "");
+  const [description, setDescription] = useState(assignment?.description || "");
+  const [points, setPoints] = useState(assignment?.points || 0);
+  const [dueDate, setDueDate] = useState(assignment?.dueDate || "");
+  const [availableDate, setAvailableDate] = useState(assignment?.availableDate || "");
+
   return (
-    <div className="container" id="wd-assignments-editor">
-      <h3>Edit Assignment</h3>
-
-      {/* Assignment Name */}
-      <Form.Group className="mb-3">
-        <Form.Label>Assignment Name</Form.Label>
-        <Form.Control type="text" defaultValue="A1 - ENV + HTML" />
-      </Form.Group>
-
-      {/* Description */}
-      <Form.Group className="mb-3">
-        <Form.Label>Description</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={6}
-          defaultValue={`The assignment is available online. Submit a link to the landing page of your Web application running on Netlify. 
-The landing page should include the following: 
-- Your full name and section 
-- Links to each of the lab assignments 
-- Link to the Kanbas application 
-- Links to all relevant source code repositories 
-The Kanbas application should include a link to navigate back to the landing page.`}
+    <div id="wd-assignment-editor">
+      <h2>Assignment Editor for {title}</h2>
+      <div className="mb-3">
+        <label htmlFor="title" className="form-label">Assignment Name</label>
+        <input
+          type="text"
+          id="title"
+          className="form-control"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
-      </Form.Group>
+      </div>
 
-      {/* Points and Assignment Group */}
-      <Row className="mb-3">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label>Points</Form.Label>
-            <Form.Control type="number" defaultValue={100} />
-          </Form.Group>
-        </Col>
-
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label>Assignment Group</Form.Label>
-            <Form.Select defaultValue="ASSIGNMENTS">
-              <option value="ASSIGNMENTS">ASSIGNMENTS</option>
-              <option value="QUIZZES">QUIZZES</option>
-              <option value="PROJECTS">PROJECTS</option>
-            </Form.Select>
-          </Form.Group>
-        </Col>
-      </Row>
-
-      {/* Display Grade and Submission Type */}
-      <Row className="mb-3">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label>Display Grade As</Form.Label>
-            <Form.Select defaultValue="Percentage">
-              <option value="Percentage">Percentage</option>
-              <option value="Points">Points</option>
-            </Form.Select>
-          </Form.Group>
-        </Col>
-
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label>Submission Type</Form.Label>
-            <Form.Select defaultValue="Online">
-              <option value="Online">Online</option>
-              <option value="On Paper">On Paper</option>
-            </Form.Select>
-          </Form.Group>
-        </Col>
-      </Row>
-
-      {/* Online Entry Options */}
-      <Form.Group className="mb-3">
-        <Form.Label>Online Entry Options</Form.Label>
-        <Form.Check
-          type="checkbox"
-          id="text-entry"
-          label="Text Entry"
+      <div className="mb-3">
+        <label htmlFor="description" className="form-label">Description</label>
+        <textarea
+          id="description"
+          className="form-control"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
-        <Form.Check
-          type="checkbox"
-          id="website-url"
-          label="Website URL"
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="points" className="form-label">Points</label>
+        <input
+          type="number"
+          id="points"
+          className="form-control"
+          value={points}
+          onChange={(e) => setPoints(Number(e.target.value))}
         />
-        <Form.Check
-          type="checkbox"
-          id="media-recordings"
-          label="Media Recordings"
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="dueDate" className="form-label">Due Date</label>
+        <input
+          type="datetime-local"
+          id="dueDate"
+          className="form-control"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
         />
-        <Form.Check
-          type="checkbox"
-          id="file-uploads"
-          label="File Uploads"
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="availableDate" className="form-label">Available Date</label>
+        <input
+          type="datetime-local"
+          id="availableDate"
+          className="form-control"
+          value={availableDate}
+          onChange={(e) => setAvailableDate(e.target.value)}
         />
-      </Form.Group>
+      </div>
 
-      {/* Assign To, Due Date, Availability */}
-      <Row className="mb-3">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label>Assign To</Form.Label>
-            <Form.Select>
-              <option>Everyone</option>
-              <option>Specific Group</option>
-            </Form.Select>
-          </Form.Group>
-        </Col>
-
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label>Due</Form.Label>
-            <Form.Control type="date" defaultValue="2024-05-13" />
-          </Form.Group>
-        </Col>
-      </Row>
-
-      <Row className="mb-3">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label>Available From</Form.Label>
-            <Form.Control type="date" defaultValue="2024-05-06" />
-          </Form.Group>
-        </Col>
-
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label>Available Until</Form.Label>
-            <Form.Control type="date" defaultValue="2024-05-20" />
-          </Form.Group>
-        </Col>
-      </Row>
-
-      {/* Save/Cancel Buttons */}
-      <div className="mt-3">
-        <Button variant="secondary" className="me-2">
+      <div className="d-flex justify-content-between">
+        {/* Cancel button: Goes back to the list of assignments */}
+        <Link to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-secondary">
           Cancel
-        </Button>
-        <Button variant="success" type="submit">
+        </Link>
+
+        {/* Save button: For now, we just navigate back to the assignments */}
+        <Link to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-primary">
           Save
-        </Button>
+        </Link>
       </div>
     </div>
   );

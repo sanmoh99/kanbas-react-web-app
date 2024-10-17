@@ -29,3 +29,18 @@
     margin-left: 120px; /* This should match the width of the navbar */
     padding: 20px; /* Optional padding */
   }
+
+  /* Set all navigation links to red by default */
+.nav-link {
+  color: red !important; /* Ensure all navigation links are red */
+}
+
+/* Set the text above the navigation (breadcrumb) to red */
+#breadcrumb {
+  color: red !important; /* Ensure the breadcrumb is also red */
+}
+
+/* Make the active navigation link black */
+.active-link {
+  color: black !important; /* Make the active link black */
+}

@@ -28,3 +28,11 @@
 .list-group-item:not(.active):hover {
   background-color: #f9f9f9; /* Slightly darker on hover for non-active links */
 }
+
+.inactive-link {
+  color: red; /* Make inactive links red */
+}
+
+.active-link {
+  color: black; /* Make the active link black */
+}
