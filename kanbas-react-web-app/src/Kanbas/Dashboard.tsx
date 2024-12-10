@@ -1,164 +1,177 @@
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./index.css";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import * as db from "./Database";
+import {useEffect, useState} from "react";
+import {addEnrollment, deleteEnrollment, setEnrollments} from "./reducer";
+import * as client from "./client"
 
-export default function Dashboard() {
-  return (
-    <div id="wd-dashboard" className="main-content">
-      <h1 id="wd-dashboard-title">Dashboard</h1>
-      <hr />
-      <h2 id="wd-dashboard-published">Published Courses (7)</h2>
-      <hr />
+export default function Dashboard({
+                                      courses,
+                                      setCourses,
+                                      course,
+                                      setCourse,
+                                      addNewCourse,
+                                      deleteCourse,
+                                      updateCourse,
+                                  }: {
+    courses: any;
+    setCourses: any;
+    course: any;
+    setCourse: any;
+    addNewCourse: any;
+    deleteCourse: any;
+    updateCourse: any;
+}) {
+    const dispatch = useDispatch();
+    const [filtering, setFiltering] = useState(true)
+    const {currentUser} = useSelector((state: any) => state.accountReducer);
+    const {enrollments} = useSelector((state: any) => state.enrollmentReducer);
 
-      {/* Responsive Grid for Courses */}
-      <div id="wd-dashboard-courses" className="row row-cols-1 row-cols-md-4 g-3">
-        {/* Card 1 */}
-        <div className="col">
-          <div className="card h-100" style={{ width: "200px" }}>
-            <img
-              src="images/CS7200.png"
-              className="card-img-top"
-              alt="CS7200"
-              style={{ height: "120px", objectFit: "cover" }} // Adjust image height
-            />
-            <div className="card-body" style={{ padding: "10px" }}> {/* Reduce padding */}
-              <h6 className="card-title">CS7200 Statistical methods for machine learning</h6>
-              <p className="card-text" style={{ fontSize: "12px" }}> {/* Smaller text */}
-                Learn the statistical methods for machine learning.
-              </p>
-              <Link to="/Kanbas/Courses/CS7200/Home" className="btn btn-primary btn-sm">
-                Go to Course
-              </Link>
+    const fetchEnrollments = async () => {
+        try {
+            dispatch(setEnrollments( await client.getEnrollments() ));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        fetchEnrollments();
+    }, []);
+
+    const enroll = async(course: any) => {
+        client.enroll(course._id)
+        dispatch(addEnrollment({user: currentUser._id, course: course._id}))
+    }
+
+    const unenroll = async(course: any) => {
+        const _id = enrollments.find((enrollment: any) => enrollment.user === currentUser._id &&
+            enrollment.course === course._id)._id
+        await client.unenroll(course._id);
+        dispatch(deleteEnrollment(_id))
+    }
+
+    const filteredCourses = filtering ? courses.filter((course: any) =>
+        enrollments.some(
+            (enrollment: any) =>
+                enrollment.user === currentUser._id &&
+                enrollment.course === course._id
+        )) : courses;
+    const isFaculty = currentUser.role === "FACULTY";
+    const isStudent = currentUser.role === "STUDENT";
+
+    return (
+        <div id="wd-dashboard">
+            <h1 id="wd-dashboard-title">Dashboard</h1>
+            {isFaculty &&
+                <div>
+                    <hr/>
+                    <h5>
+                        New Course
+                        <button className="btn btn-primary float-end" onClick={addNewCourse}>
+                            {" "}
+                            Add{" "}
+                        </button>
+                        <button
+                            className="btn btn-warning float-end me-2"
+                            onClick={updateCourse}
+                        >
+                            Update
+                        </button>
+                    </h5>
+                    <br/>
+                    <input
+                        value={course.name}
+                        className="form-control mb-2"
+                        onChange={(e) => setCourse({...course, name: e.target.value})}
+                    />
+                    <textarea
+                        value={course.description}
+                        className="form-control"
+                        onChange={(e) => setCourse({...course, description: e.target.value})}
+                    />
+                </div>
+            }
+            <hr/>
+            <h2 id="wd-dashboard-published">
+                Published Courses ({filteredCourses.length})
+                {/*{isStudent &&*/}
+                <button className="btn btn-primary float-end"
+                        onClick={() => (setFiltering(!filtering))}>
+                    Enrollments
+                </button>
+                {/*}*/}
+            </h2>
+            {" "}
+            <hr/>
+            <div id="wd-dashboard-courses" className="row">
+                <div className="row row-cols-1 row-cols-md-5 g-4">
+                    {filteredCourses.map((course: any) => (
+                        <div className="wd-dashboard-course col" style={{width: "350px"}}>
+                            <div className="card rounded-3 overflow-hidden">
+                                <Link
+                                    to={`/Kanbas/Courses/${course._id}/Home`}
+                                    className="wd-dashboard-course-link text-decoration-none text-dark"
+                                >
+                                    <img src="/images/reactjs.jpg" width="100%" height={160}/>
+                                    <div className="card-body">
+                                        <h5 className="wd-dashboard-course-title card-title">
+                                            {course.name}
+                                        </h5>
+                                        <p
+                                            className="wd-dashboard-course-title card-text overflow-y-hidden"
+                                            style={{maxHeight: 100}}
+                                        >
+                                            {course.description}
+                                        </p>
+
+
+                                        {isFaculty && <div>
+                                            <button
+                                                id="wd-edit-course-click"
+                                                onClick={(event) => {
+                                                    event.preventDefault();
+                                                    setCourse(course);
+                                                }}
+                                                className="btn btn-warning me-2 float-end"
+                                            >
+                                                Edit
+                                            </button>
+
+                                            <button
+                                                onClick={(event) => {
+                                                    event.preventDefault();
+                                                    deleteCourse(course._id);
+                                                }}
+                                                className="btn btn-danger float-end"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                        }
+
+                                        {enrollments.some((enrollment: any) => enrollment.user === currentUser._id &&
+                                            enrollment.course === course._id) ?
+                                            <button className="btn btn-danger float-end" onClick={(e) => {
+                                                e.preventDefault()
+                                                unenroll(course);
+                                            }}>Unenroll</button> :
+                                            <button className="btn btn-success float-end" onClick={(e) => {
+                                                e.preventDefault()
+                                                enroll(course);
+                                            }}>Enroll</button>
+                                        }
+
+
+                                        <button className="btn btn-primary"> Go</button>
+
+
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-          </div>
         </div>
-
-        {/* Card 2 */}
-        <div className="col">
-          <div className="card h-100" style={{ width: "200px" }}>
-            <img
-              src="images/CS3000.jpg"
-              className="card-img-top"
-              alt="CS3000"
-              style={{ height: "120px", objectFit: "cover" }} // Adjust image height
-            />
-            <div className="card-body" style={{ padding: "10px" }}> {/* Reduce padding */}
-              <h6 className="card-title">CS3000 Algorithm Design</h6>
-              <p className="card-text" style={{ fontSize: "12px" }}>
-                Master the fundamental principles of algorithm design.
-              </p>
-              <Link to="/Kanbas/Courses/1234/Home" className="btn btn-primary btn-sm">
-                Go to Course
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="col">
-          <div className="card h-100" style={{ width: "200px" }}>
-            <img
-              src="images/CSG280.jpg"
-              className="card-img-top"
-              alt="CSG280"
-              style={{ height: "120px", objectFit: "cover" }} // Adjust image height
-            />
-            <div className="card-body" style={{ padding: "10px" }}> {/* Reduce padding */}
-              <h6 className="card-title">CS G280 Parallel computing</h6>
-              <p className="card-text" style={{ fontSize: "12px" }}>
-                Explore the world of parallel computing.
-              </p>
-              <Link to="/Kanbas/Courses/1234/Home" className="btn btn-primary btn-sm">
-                Go to Course
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="col">
-          <div className="card h-100" style={{ width: "200px" }}>
-            <img
-              src="images/CS1800.jpg"
-              className="card-img-top"
-              alt="CS1800"
-              style={{ height: "120px", objectFit: "cover" }} // Adjust image height
-            />
-            <div className="card-body" style={{ padding: "10px" }}> {/* Reduce padding */}
-              <h6 className="card-title">CS1800 Discrete Structures</h6>
-              <p className="card-text" style={{ fontSize: "12px" }}>
-                Delve into the foundations of discrete structures.
-              </p>
-              <Link to="/Kanbas/Courses/1234/Home" className="btn btn-primary btn-sm">
-                Go to Course
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 5 */}
-        <div className="col">
-          <div className="card h-100" style={{ width: "200px" }}>
-            <img
-              src="images/CS2500.png"
-              className="card-img-top"
-              alt="CS2500"
-              style={{ height: "120px", objectFit: "cover" }} // Adjust image height
-            />
-            <div className="card-body" style={{ padding: "10px" }}> {/* Reduce padding */}
-              <h6 className="card-title">CS 2500 Fundamentals of computer science</h6>
-              <p className="card-text" style={{ fontSize: "12px" }}>
-                Understand the fundamentals of computer science.
-              </p>
-              <Link to="/Kanbas/Courses/1234/Home" className="btn btn-primary btn-sm">
-                Go to Course
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 6 */}
-        <div className="col">
-          <div className="card h-100" style={{ width: "200px" }}>
-            <img
-              src="images/CS2800.jpg"
-              className="card-img-top"
-              alt="CS2800"
-              style={{ height: "120px", objectFit: "cover" }} // Adjust image height
-            />
-            <div className="card-body" style={{ padding: "10px" }}> {/* Reduce padding */}
-              <h6 className="card-title">CS 2800 Logic and computation</h6>
-              <p className="card-text" style={{ fontSize: "12px" }}>
-                Dive deep into logic and computation.
-              </p>
-              <Link to="/Kanbas/Courses/1234/Home" className="btn btn-primary btn-sm">
-                Go to Course
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 7 */}
-        <div className="col">
-          <div className="card h-100" style={{ width: "200px" }}>
-            <img
-              src="images/CS3520.jpg"
-              className="card-img-top"
-              alt="CS3520"
-              style={{ height: "120px", objectFit: "cover" }} // Adjust image height
-            />
-            <div className="card-body" style={{ padding: "10px" }}> {/* Reduce padding */}
-              <h6 className="card-title">CS 3520 C++ programming</h6>
-              <p className="card-text" style={{ fontSize: "12px" }}>
-                Learn advanced C++ programming concepts.
-              </p>
-              <Link to="/Kanbas/Courses/1234/Home" className="btn btn-primary btn-sm">
-                Go to Course
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }

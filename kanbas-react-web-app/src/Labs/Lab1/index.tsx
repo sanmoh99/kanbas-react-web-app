@@ -1,9 +1,18 @@
+import { useSelector } from "react-redux";
+
 export default function Lab1() {
+  const { message } = useSelector((state: any) => state.helloReducer);
+  const { sum } = useSelector((state: any) => state.addReducer);
+  const { count } = useSelector((state: any) => state.counterReducer);
+
   return (
     <div id="wd-lab1">
       <h2>Lab 1</h2>
       <h3>HTML Examples</h3>
+      {message}
       <div id="wd-h-tag">
+        <h2>SUM: {sum}</h2>
+        <h2>COUNT: {count}</h2>
         <h4>Heading Tags</h4>
         Text documents are often broken up into several sections and
         subsections. Each section is usually prefaced with a short title or
@@ -43,108 +52,64 @@ export default function Lab1() {
             <li>Flip and cook the other side.</li>
             <li>Serve and enjoy!</li>
           </ol>
-          My favorite recipe:
-          <ol id="wd-your-favorite-recipe">
-          <li>Put oil in the pan </li>
-          <li>Break eggs into the pan </li>
-          <li>Wait for 5 minutes and stir every once in a while </li>
-          </ol>
         </div>
-        <h5>Unordered List Tag</h5>
-          My favorite books (in no particular order)
-          <ul id="wd-my-books">
-            <li>Dune</li>
-            <li>Lord of the Rings</li>
-            <li>Ender's Game</li>
-            <li>Red Mars</li>
-            <li>The Forever War</li>
-          </ul>
-          Your favorite books (in no particular order)
-          <ul id="wd-your-books">
-            <li>Harry Potter</li>
-            <li>In search of lost time</li>
-          </ul>
-          <div id="wd-tables">
-        <h4>Table Tag</h4>
-        <table border={1} width="100%">
-          <thead>
-            <tr>
-              <th>Quiz</th>
-              <th>Topic</th>
-              <th>Date</th>
-              <th>Grade</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Q1</td>
-              <td>HTML</td>
-              <td>2/3/21</td>
-              <td>85</td>
-            </tr>
-            <tr>
-              <td>Q2</td>
-              <td>CSS</td>
-              <td>2/10/21</td>
-              <td>90</td>
-            </tr>
-            <tr>
-              <td>Q3</td>
-              <td>JavaScript</td>
-              <td>2/17/21</td>
-              <td>95</td>
-            </tr>
-            <tr>
-              <td>Q4</td>
-              <td>Reactjs</td>
-              <td>3/3/21</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <td>Q5</td>
-              <td>SQL queries</td>
-              <td>3/10/21</td>
-              <td>92</td>
-            </tr>
-            <tr>
-              <td>Q6</td>
-              <td>Web apps</td>
-              <td>3/17/21</td>
-              <td>96</td>
-            </tr>
-            <tr>
-              <td>Q7</td>
-              <td>Advanced CSS</td>
-              <td>4/1/21</td>
-              <td>97</td>
-            </tr>
-            <tr>
-              <td>Q8</td>
-              <td>Responsive Web Design</td>
-              <td>4/8/21</td>
-              <td>89</td>
-            </tr>
-            <tr>
-              <td>Q9</td>
-              <td>Client-Side vs. Server-Side Programming</td>
-              <td>4/15/21</td>
-              <td>85</td>
-            </tr>
-            <tr>
-              <td>Q10</td>
-              <td>Web Security Basics</td>
-              <td>4/22/21</td>
-              <td>80</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={3}>Average</td>
-              <td>90.9</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+        <div id="wd-tables">
+          <h4>Table Tag</h4>
+          <table border={1} width="100%">
+            <thead>
+              <tr>
+                <th>Quiz</th> {/* table heading*/}
+                <th>Topic</th>
+                <th>Date</th>
+                <th>Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Q1</td> {/* table data / cell */}
+                <td>HTML</td>
+                <td>2/3/21</td>
+                <td>85</td>
+              </tr>
+              <tr>
+                <td>Q2</td> {/* table data / cell */}
+                <td>HTML</td>
+                <td>2/3/21</td>
+                <td>85</td>
+              </tr>
+              <tr>
+                <td>Q3</td> {/* table data / cell */}
+                <td>HTML</td>
+                <td>2/3/21</td>
+                <td>85</td>
+              </tr>
+              <tr>
+                <td>Q4</td> {/* table data / cell */}
+                <td>HTML</td>
+                <td>2/3/21</td>
+                <td>85</td>
+              </tr>
+              <tr>
+                <td>Q1</td> {/* table data / cell */}
+                <td>HTML</td>
+                <td>2/3/21</td>
+                <td>85</td>
+              </tr>
+              <tr>
+                <td>Q1</td> {/* table data / cell */}
+                <td>HTML</td>
+                <td>2/3/21</td>
+                <td>85</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={3}>Average</td> {/* column span */}
+                <td>90</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
       <div id="wd-images">
         <h4>Image tag</h4>
